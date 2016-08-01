@@ -19,12 +19,7 @@ new Thread(new Runnable() {
     public void run() {
         Session session = MailHelper.getInstance(MainActivity.this).login(info);
         if(session != null){
-            try {
-                List<ReceiverMailInfo> list = MailHelper.getInstance(MainActivity.this).getAllMail(Constants.MailFolder.INBOX, info, session);
-                Log.i("TAG", list.size()+"");
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            }
+            // 登录成功
         }
     }
 }).start();
@@ -32,6 +27,12 @@ new Thread(new Runnable() {
 
 ## 收件箱
 ```java
+try {
+    List<ReceiverMailInfo> list = MailHelper.getInstance(MainActivity.this).getAllMail(Constants.MailFolder.INBOX, info, session);
+    Log.i("TAG", list.size()+"");
+} catch (MessagingException e) {
+        e.printStackTrace();
+}
 
 ```
 
@@ -42,5 +43,5 @@ info.fromAddress = address;
 info.subject = "测试邮件";
 info.content = "测试邮件 内容";
 info.receivers = new String[]{"352091626@qq.com"};
-helper.sendMail(info, session);
+MailHelper.getInstance(MainActivity.this).sendMail(info, session);
 ```
