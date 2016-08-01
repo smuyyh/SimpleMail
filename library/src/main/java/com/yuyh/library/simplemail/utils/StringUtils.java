@@ -71,7 +71,7 @@ public class StringUtils {
         if (text == null || color == null || textSize == null)
             throw new IllegalArgumentException("参数不能为空");
         if (text.length != color.length || text.length != textSize.length)
-            throw new IllegalArgumentException("参数数组长度不一致");
+            throw new IllegalArgumentException("参数长度不一致");
         SpannableStringBuilder sb = new SpannableStringBuilder();
         try {
             for (int i = 0; i < text.length; i++) {

@@ -3,22 +3,23 @@ package com.yuyh.library.simplemail.utils;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 
+/**
+ * 邮件账号密码校验器
+ *
+ * @author yuyh.
+ * @date 2016/8/1.
+ */
 public class MailAuthenticator extends Authenticator {
-	String userName=null;
-    String password=null;
-       
-    public MailAuthenticator(){
-    }
+    private String userName = null;
+    private String password = null;
+
     public MailAuthenticator(String username, String password) {
-        this.userName = username; 
-        this.password = password; 
+        this.userName = username;
+        this.password = password;
     }
-    
-    /**
-     * 登入校验
-     */
-	@Override
-	protected PasswordAuthentication getPasswordAuthentication() {
-		return new PasswordAuthentication(userName, password);
-	} 
+
+    @Override
+    protected PasswordAuthentication getPasswordAuthentication() {
+        return new PasswordAuthentication(userName, password);
+    }
 }

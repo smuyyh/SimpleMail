@@ -16,29 +16,30 @@ import javax.mail.Session;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MailHelper helper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String address = "smuyyh@126.com";
-        String pwd = "";
-        String host = "smtp." + address.substring(address.lastIndexOf("@") + 1);
+        helper = MailHelper.getInstance(MainActivity.this);
 
-        final SendMailInfo info = new SendMailInfo();
-        info.mailServerHost = host;
-        info.mailServerPort = "25";
-        info.userName = address;
-        info.password = pwd;
-        info.validate = true;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Session session = MailHelper.getInstance(MainActivity.this).login(info);
+                Session session = MailApp.session;
                 if(session != null){
                     try {
-                        List<ReceiverMailInfo> list = MailHelper.getInstance(MainActivity.this).getAllMail(Constants.MailFolder.INBOX, info, session);
+                        List<ReceiverMailInfo> list = helper.getAllMail(Constants.MailFolder.INBOX, MailApp.info, session);
                         Log.i("TAG", list.size()+"");
+
+                        SendMailInfo info = new SendMailInfo();
+                        info.fromAddress = MailApp.info.userName;
+                        info.subject = "测试邮件";
+                        info.content = "测试邮件 内容";
+                        info.receivers = new String[]{"352091626@qq.com"};
+                        helper.sendMail(info, session);
                     } catch (MessagingException e) {
                         e.printStackTrace();
                     }
