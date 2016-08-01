@@ -3,6 +3,7 @@ package com.yuyh.library.simplemail;
 import android.content.Context;
 
 import com.yuyh.library.simplemail.bean.Attachment;
+import com.yuyh.library.simplemail.bean.LoginInfo;
 import com.yuyh.library.simplemail.bean.ReceiverMailInfo;
 import com.yuyh.library.simplemail.bean.SendMailInfo;
 import com.yuyh.library.simplemail.constant.Constants;
@@ -60,7 +61,7 @@ public class MailHelper {
      * @param info
      * @return
      */
-    public Session login(SendMailInfo info) {
+    public Session login(LoginInfo info) {
         // 创建密码验证器
         MailAuthenticator authenticator = null;
         if (info.validate) {
@@ -119,16 +120,18 @@ public class MailHelper {
 
             FileDataSource fds;
             List<Attachment> list = mailInfo.attachmentInfos;
-            for (Attachment atta : list) {
-                fds = new FileDataSource(atta.filePath);
-                BodyPart mbpFile = new MimeBodyPart();
-                mbpFile.setDataHandler(new DataHandler(fds));
-                try {
-                    mbpFile.setFileName(MimeUtility.encodeText(fds.getName()));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+            if(list != null && !list.isEmpty()) {
+                for (Attachment atta : list) {
+                    fds = new FileDataSource(atta.filePath);
+                    BodyPart mbpFile = new MimeBodyPart();
+                    mbpFile.setDataHandler(new DataHandler(fds));
+                    try {
+                        mbpFile.setFileName(MimeUtility.encodeText(fds.getName()));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    multipart.addBodyPart(mbpFile);
                 }
-                multipart.addBodyPart(mbpFile);
             }
             mailMessage.setContent(multipart);
             mailMessage.saveChanges();
@@ -151,7 +154,7 @@ public class MailHelper {
         return false;
     }
 
-    public List<ReceiverMailInfo> getAllMail(Constants.MailFolder mailFolder, SendMailInfo info, Session session) throws MessagingException {
+    public List<ReceiverMailInfo> getAllMail(Constants.MailFolder mailFolder, LoginInfo info, Session session) throws MessagingException {
         List<ReceiverMailInfo> mailList = new ArrayList<>();
         // 连接服务器
         Store store = session.getStore("pop3");
