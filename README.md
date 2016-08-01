@@ -8,7 +8,7 @@ String address = "smuyyh@126.com";
 String pwd = "xxxxxxxxxx";
 String host = "smtp." + address.substring(address.lastIndexOf("@") + 1);
 
-final SendMailInfo info = new SendMailInfo();
+final LoginInfo info = new LoginInfo();
 info.mailServerHost = host;
 info.mailServerPort = "25";
 info.userName = address;
@@ -32,8 +32,15 @@ new Thread(new Runnable() {
 
 ## 收件箱
 ```java
+
 ```
 
 ## 发送邮件
 ```java
+SendMailInfo info = new SendMailInfo();
+info.fromAddress = address;
+info.subject = "测试邮件";
+info.content = "测试邮件 内容";
+info.receivers = new String[]{"352091626@qq.com"};
+helper.sendMail(info, session);
 ```
